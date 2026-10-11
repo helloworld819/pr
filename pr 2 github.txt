@@ -1,0 +1,84 @@
+Step 1: Download Git
+Open your browser and visit:
+Git Downloads
+Click Download for Windows.
+
+Step 2: Install Git
+1.	Double-click the downloaded installer.
+2.	Click Next for all installation screens (keep the default settings).
+3.	Click Install.
+4.	Click Finish.
+
+Step 3: Verify Installation
+Open Command Prompt.
+Type:
+git --version
+
+Step 4: Login to GitHub Account
+
+Step 5: Create a New Repository
+After logging in:
+1.	Click the + icon (top-right).
+2.	Select New repository.
+Repository Name -Telecom-MLops
+Click Create Repository.
+
+Step 6: Open Your Project Folder
+Open Command Prompt.
+Navigate to the folder:
+cd "C:\Users\Desktop\MLOPS\mlops prac\prac_1"
+
+Step 7: Initialize Git
+git init
+
+Step 8: Configure Git (First Time Only)
+git config --global user.name "Your Name"
+git config --global user.email "your_email@gmail.com"
+Verify:
+git config --list
+
+Step 9: Check Project Status
+git status
+
+Step 10: Add All Files
+git add .
+Now check:
+git status
+
+Step 11: Commit Files
+git commit -m "Initial MLOps Project"
+
+Step 12: Copy the Repository URL
+On your GitHub repository page, click the green Code button.
+Copy the HTTPS URL.
+Example:
+https://github.com/yourusername/Telecom-MLops.git
+
+Step 13: Connect Local Project to GitHub
+In Command Prompt:
+git remote add origin https://github.com/yourusername/Telecom-MLops.git
+Verify:
+git remote -v
+
+Step 14: Push Your Project
+git branch -M main
+Now push:
+git push -u origin main
+
+Step 15: Refresh GitHub
+Open your repository in the browser.
+You should now see:
+Telecom-MLops
+
+Step 16: Make a Change
+Open train.py.
+Add:
+print("Training Started...")
+Save the file.
+
+Step 17: Upload the New Version
+git add train.py
+git commit -m "Updated training message"
+git push
+Refresh GitHub.
+The updated version of train.py is now stored in the repository.

@@ -1,0 +1,88 @@
+Step 1 : Create Project Folder
+Desktop > MLOPS > mlops prac > prac_1
+
+Inside prac1 paste
+tower_telemetry.csv
+
+Step 2 : Create Python File
+Save as train.py Inside prac_1
+
+Step 3 : Write Python Program
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+import joblib
+import json
+
+print("Loading Dataset...")
+df = pd.read_csv("tower_telemetry.csv")
+X = df[['voltage',
+        'temperature_c',
+        'signal_drop_rate',
+        'cpu_usage',
+        'battery_health',
+        'network_latency_ms']]
+y = df['hardware_failure']
+X_train,X_test,y_train,y_test = train_test_split(
+X,
+y,
+test_size=0.25,
+random_state=42
+)
+print("Training Model...")
+model=RandomForestClassifier(
+n_estimators=100,
+random_state=42
+)
+model.fit(X_train,y_train)
+accuracy=model.score(X_test,y_test)
+print("Accuracy :",accuracy)
+joblib.dump(model,"telecom_tower_model.pkl")
+metrics={"accuracy":accuracy}
+with open("metrics.json","w") as f:
+    json.dump(metrics,f,indent=4)
+print("Training Completed Successfully")
+
+Save the file as predictive analysis.py
+
+Step 5 : Run the Program
+Open Command Prompt.
+Go to your folder.
+cd "C:\Users\sarve\Desktop\MLOPS\mlops prac\prac_1"
+Run
+python predictive analysis.py
+
+Step 6 : Check Generated Files
+
+Step 7: Create Prediction Program
+
+predict.py
+
+import joblib
+import pandas as pd
+model=joblib.load("telecom_tower_model.pkl")
+new_data=pd.DataFrame({
+"voltage":[11.2],
+"temperature_c":[55],
+"signal_drop_rate":[0.5],
+"cpu_usage":[88],
+"battery_health":[65],
+"network_latency_ms":[95]
+})
+
+prediction=model.predict(new_data)
+
+if prediction[0]==1:
+
+    print("Hardware Failure Predicted")
+
+else:
+
+    print("Tower is Healthy")
+
+Save.
+
+Step 8 : Run Prediction
+python predict.py
+
