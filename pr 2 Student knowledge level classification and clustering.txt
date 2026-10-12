@@ -1,0 +1,86 @@
+setwd("C:/Users/InbasagarNadar/Downloads/ds2/02_Student_Knowledge_Classification")
+library(readxl)
+library(dplyr)
+library(ggplot2)
+library(rpart)
+library(rpart.plot)
+
+# 1. Load dataset
+file_path = "Data_User_Modeling_Dataset_Hamdi Tolga KAHRAMAN.xls"
+df = read_excel(file_path, sheet = "Training_Data")
+df = df[, 1:6]
+colnames(df) = c("STG", "SCG", "STR", "LPR", "PEG", "UNS")
+
+# 2. EDA
+head(df)
+dim(df)
+str(df)
+summary(df)
+
+# Plot number of students in each knowledge level (ggplot2 as in PDF)
+ggplot(df, aes(y = UNS, fill = UNS)) +
+  geom_bar() +
+  labs(title = "Number of Students in Each Knowledge Level", y = "Knowledge Level", x = "Number of Students") +
+  theme_minimal()
+
+# 3. Train test split
+set.seed(42)
+df$UNS = as.factor(df$UNS)
+train_idx = sample(seq_len(nrow(df)), size = 0.75 * nrow(df))
+train = df[train_idx, ]
+test = df[-train_idx, ]
+
+# 4. Decision Tree Classification (rpart & rpart.plot)
+dt_model = rpart(UNS ~ STG + SCG + STR + LPR + PEG, data = train, method = "class")
+dt_model
+
+# Decision tree plot using rpart.plot
+rpart.plot(
+  dt_model,
+  type = 2,
+  extra = 104,
+  under = TRUE,
+  fallen.leaves = TRUE,
+  box.palette = "Blues",
+  main = "Decision Tree for Student Knowledge Level"
+)
+
+# Predictions and evaluation on test set
+pred_test = predict(dt_model, newdata = test, type = "class")
+cm = table(Actual = test$UNS, Predicted = pred_test)
+cm
+acc = sum(diag(cm)) / sum(cm)
+acc
+
+# Actual vs Predicted Knowledge Level Distribution (ggplot2)
+eval_df = data.frame(Actual = test$UNS, Predicted = pred_test)
+ggplot(eval_df, aes(x = Actual, fill = Predicted)) +
+  geom_bar(position = "dodge") +
+  labs(title = "Actual vs Predicted Student Knowledge Level (Test Set)", x = "Actual Knowledge Level", fill = "Predicted Level") +
+  theme_minimal()
+
+# 5. K-Means Clustering
+df1 = df[, c("STG", "PEG")]
+df1 = as.matrix(df1)
+
+# Elbow method to find optimal k
+scal = scale(df1)
+maximumClusters = 10
+wss = sapply(1:maximumClusters, function(k) {
+  kmeans(scal, k, nstart = 50, iter.max = 10)$tot.withinss
+})
+
+# Plot elbow curve
+plot(1:maximumClusters, wss, type = "b", xlab = "k values", ylab = "Total Within-Cluster SS", main = "Elbow Method for Optimal k")
+abline(v = 4, col = "red", lty = 2)
+
+# K-Means clustering with k = 4
+km4 = kmeans(df1, 4, iter.max = 10)
+km4
+
+# Plotting the clusters (ggplot2)
+df$cluster = as.factor(km4$cluster)
+ggplot(df, aes(x = STG, y = PEG, color = cluster)) +
+  geom_point(size = 2.5, alpha = 0.8) +
+  labs(title = "K Means Clustering (with K = 4)", x = "Study Time (STG)", y = "Exam Performance (PEG)") +
+  theme_minimal()

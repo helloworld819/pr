@@ -1,0 +1,43 @@
+setwd("C:/Users/InbasagarNadar/Downloads/ds2/03_Wifi_Localization_Classification")
+library(readr)
+library(ggplot2)
+library(rpart)
+library(rpart.plot)
+
+# 1. Load dataset & Density Analysis
+wifi = read_tsv("wifi_localization.txt", col_names = c("X1", "X2", "X3", "X4", "X5", "X6", "X7", "room"), show_col_types = FALSE)
+wifi$room = as.factor(wifi$room)
+
+ggplot(wifi, aes(x = X1, fill = room, color = room)) +
+  geom_density(alpha = 0.5) +
+  labs(title = "Router 1 (X1) Signal Density across Rooms", x = "Signal Strength X1 (dBm)", y = "Density") +
+  theme_minimal()
+
+set.seed(42)
+train_idx = sample(seq_len(nrow(wifi)), size = 0.7 * nrow(wifi))
+wifi_train = wifi[train_idx, ]
+wifi_test = wifi[-train_idx, ]
+
+fit.rpart = rpart(room ~ ., data = wifi_train)
+rpart.plot(
+  fit.rpart,
+  type = 2,
+  extra = 104,
+  under = TRUE,
+  fallen.leaves = TRUE,
+  main = "Decision Tree for WiFi Indoor Localization",
+  box.palette = "BuGn",
+  shadow.col = "gray",
+  nn = TRUE
+)
+
+ 3. Test Predictions & Actual vs Predicted Evaluation
+pred.test.rpart = predict(fit.rpart, newdata = wifi_test[, 1:7], type = "class")
+accuracy.test = mean(pred.test.rpart == wifi_test$room)
+accuracy.test
+
+eval_df = data.frame(Actual = wifi_test$room, Predicted = pred.test.rpart)
+ggplot(eval_df, aes(x = Actual, fill = Predicted)) +
+  geom_bar(position = "dodge") +
+  labs(title = "Actual vs Predicted Room Counts (Test Set)", x = "Actual Room", fill = "Predicted Room") +
+  theme_minimal()

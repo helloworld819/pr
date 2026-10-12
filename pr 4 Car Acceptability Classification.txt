@@ -1,0 +1,50 @@
+setwd("C:/Users/InbasagarNadar/Downloads/ds2/04_Car_Acceptability_Classification")
+library(caret)
+library(rpart)
+library(rpart.plot)
+library(ggplot2)
+
+# 1. Load dataset with clean factor levels
+car_df = read.csv("car.data", sep = ",", header = FALSE, stringsAsFactors = TRUE)
+colnames(car_df) = c("buying", "maint", "doors", "persons", "lug_boot", "safety", "acceptability")
+
+levels(car_df$buying) = c("_high", "_low", "_med", "_vhigh")
+levels(car_df$maint) = c("_high", "_low", "_med", "_vhigh")
+levels(car_df$doors) = c("_2", "_3", "_4", "_5more")
+levels(car_df$persons) = c("_2", "_4", "_more")
+levels(car_df$lug_boot) = c("_big", "_med", "_small")
+levels(car_df$safety) = c("_high", "_low", "_med")
+
+ggplot(car_df, aes(x = acceptability, fill = acceptability)) +
+  geom_bar(show.legend = FALSE) +
+  labs(title = "Distribution of Car Acceptability Classes", x = "Acceptability Class", y = "Count") +
+  theme_minimal()
+
+ 2. Train Test Split & Repeated 10-Fold CV Decision Tree (caret)
+set.seed(3033)
+intrain = createDataPartition(car_df$acceptability, p = 0.7, list = FALSE)
+training = car_df[intrain, ]
+testing = car_df[-intrain, ]
+
+trctrl = trainControl(method = "repeatedcv", number = 10, repeats = 3)
+set.seed(3333)
+dtree = train(
+  acceptability ~ .,
+  data = training,
+  method = "rpart",
+  parms = list(split = "information"),
+  trControl = trctrl,
+  tuneLength = 10
+)
+
+prp(dtree$finalModel, box.palette = "Reds", tweak = 1.2, faclen = 0, varlen = 0)
+
+3. Prediction, Confusion Matrix & Actual vs Predicted Plot
+test_pred = predict(dtree, newdata = testing)
+confusionMatrix(test_pred, testing$acceptability)
+
+eval_df = data.frame(Actual = testing$acceptability, Predicted = test_pred)
+ggplot(eval_df, aes(x = Actual, fill = Predicted)) +
+  geom_bar(position = "dodge") +
+  labs(title = "Actual vs Predicted Car Acceptability (Test Set)", x = "Actual Acceptability", fill = "Predicted Class") +
+  theme_minimal()

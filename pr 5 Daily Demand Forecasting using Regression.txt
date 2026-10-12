@@ -1,0 +1,37 @@
+setwd("C:/Users/InbasagarNadar/Downloads/ds2/05_Daily_Demand_Forecasting")
+library(readr)
+library(ggplot2)
+
+demand = read_csv2("Daily_Demand_Forecasting_Orders.csv", show_col_types = FALSE)
+colnames(demand) = c("week", "day", "non_urgent", "urgent", "type_a", "type_b", "type_c", "fiscal", "traffic", "bank_1", "bank_2", "bank_3", "target")
+
+ggplot(demand, aes(x = non_urgent, y = target)) +
+  geom_point(color = "darkgreen", size = 2.5) +
+  geom_smooth(method = "lm", color = "red") +
+  labs(title = "Non-Urgent Orders vs Total Target Orders", x = "Non-Urgent Orders", y = "Total Target Orders") +
+  theme_minimal()
+
+2. Train Test Split & Linear Regression Forecasting Model
+set.seed(42)
+train_idx = sample(seq_len(nrow(demand)), size = 0.8 * nrow(demand))
+train = demand[train_idx, ]
+test = demand[-train_idx, ]
+
+model_forecast = lm(target ~ week + day + traffic + bank_1 + bank_2 + bank_3, data = train)
+pred = predict(model_forecast, newdata = test)
+
+rmse = sqrt(mean((test$target - pred)^2))
+r2 = 1 - (sum((test$target - pred)^2) / sum((test$target - mean(test$target))^2))
+
+rmse
+r2
+
+eval_df = data.frame(Index = 1:nrow(test), Actual = test$target, Predicted = pred)
+ggplot(eval_df, aes(x = Index)) +
+  geom_line(aes(y = Actual, color = "Actual Orders"), linewidth = 1) +
+  geom_point(aes(y = Actual, color = "Actual Orders"), size = 2.5) +
+  geom_line(aes(y = Predicted, color = "Forecasted Orders"), linetype = "dashed", linewidth = 1) +
+  geom_point(aes(y = Predicted, color = "Forecasted Orders"), size = 2.5) +
+  scale_color_manual(values = c("Actual Orders" = "black", "Forecasted Orders" = "red")) +
+  labs(title = "Actual vs Forecasted Order Demand (Test Set)", x = "Sample Index", y = "Total Orders", color = "Series") +
+  theme_minimal()

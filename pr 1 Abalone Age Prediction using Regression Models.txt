@@ -1,0 +1,67 @@
+setwd("C:/Users/InbasagarNadar/Downloads/ds2/01_Abalone_Age_Regression")
+library(readr)
+library(ggplot2)
+library(corrplot)
+
+# 1. Load dataset
+names = c("sex", "length", "diameter", "height", "weight_whole", "weight_shucked", "weight_viscera", "weight_shell", "rings")
+types = "fdddddddi"
+abalone = read_csv("abalone.data.csv", col_names = names, col_types = types)
+
+# 2. EDA
+str(abalone)
+sum(is.na(abalone))
+summary(abalone)
+
+# Calculate age (Age = Rings + 1.5)
+abalone$age = abalone$rings + 1.5
+
+# 3. Visualizations
+# Correlation plot
+numeric_cols = sapply(abalone, is.numeric)
+cor_mat = cor(abalone[, numeric_cols])
+corrplot(cor_mat, type = "upper", order = "hclust", tl.col = "black")
+
+# Shell weight vs Age with regression line (ggplot2)
+ggplot(abalone, aes(x = weight_shell, y = age, color = sex)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", color = "black") +
+  labs(title = "Shell Weight vs Age with Regression Line", x = "Shell Weight (g)", y = "Age (Years)") +
+  theme_minimal()
+
+# 4. Train test split
+set.seed(42)
+train_idx = sample(seq_len(nrow(abalone)), size = 0.8 * nrow(abalone))
+train = abalone[train_idx, ]
+test = abalone[-train_idx, ]
+
+# 5. Multiple linear regression model
+model_lm = lm(age ~ sex + length + diameter + height + weight_whole + weight_shucked + weight_viscera + weight_shell, data = train)
+summary(model_lm)
+
+# 6. Predictions and evaluation
+pred = predict(model_lm, newdata = test)
+mse = mean((test$age - pred)^2)
+rmse = sqrt(mse)
+mae = mean(abs(test$age - pred))
+r2 = 1 - sum((test$age - pred)^2) / sum((test$age - mean(test$age))^2)
+
+mse
+rmse
+mae
+r2
+
+# Actual vs Predicted plot (ggplot2)
+eval_df = data.frame(Actual = test$age, Predicted = pred, Residual = test$age - pred)
+ggplot(eval_df, aes(x = Actual, y = Predicted)) +
+  geom_point(color = "steelblue", alpha = 0.6) +
+  geom_abline(intercept = 0, slope = 1, color = "red", linetype = "dashed", linewidth = 1) +
+  labs(title = "Actual vs Predicted Age", x = "Actual Age", y = "Predicted Age") +
+  theme_minimal()
+
+# Residual plot (ggplot2)
+ggplot(eval_df, aes(x = Predicted, y = Residual)) +
+  geom_point(color = "purple", alpha = 0.6) +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed") +
+  labs(title = "Residuals vs Predicted Age", x = "Predicted Age", y = "Residuals") +
+  theme_minimal()
