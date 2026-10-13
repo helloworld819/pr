@@ -1,0 +1,12 @@
+1. Connect to Tweet_emotion.csv using Text File.
+2. Check that the columns are tweet_id, sentiment and content.
+3. Create a new worksheet named Sentiment Word Cloud.
+4. On the Marks card, change the mark type to Text.
+5. Drag sentiment to Text (the Label shelf in some Tableau versions).
+6. Drag tweet_id to Size.
+7. Change its aggregation to Count or Count (Distinct), depending on whether each tweet ID is unique.
+8. Drag sentiment to Color.
+9. Click Size and increase the size range until the frequent sentiment words stand out.
+10. Click Color and choose a suitable categorical palette.
+11. Hide unnecessary headers and gridlines if they appear.
+12. Set the title to Sentiment Word Cloud.

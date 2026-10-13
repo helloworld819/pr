@@ -1,0 +1,11 @@
+1. Connect to the US Crime dataset.
+2. Open a new worksheet named Total Criminal Incidents by State.
+3. Locate the field containing the state names and assign Geographic Role → State/Province.
+4. Double-click State to generate the US map.
+5. On the Marks card, change the mark type to Circle.
+6. Drag State to Detail.
+7. Drag the numeric incident-count field to Size.
+8. Drag the same incident-count field to Label if you want values on the map.
+9. Optionally drag the incident-count field to Color to make higher counts visually distinct.
+10. Click Size and adjust the slider so the bubbles are visible without covering too much of the map.
+11. Set the title to Total Criminal Incidents by State.

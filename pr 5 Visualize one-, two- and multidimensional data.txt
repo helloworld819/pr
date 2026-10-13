@@ -1,0 +1,30 @@
+dataset - superstore.csv
+# One-dimensional data — Sales Distribution by Region
+1. Open a new worksheet named Sales by Region.
+2. Drag Region to Rows.
+3. Drag Sales to Columns.
+4. Choose Bar on the Marks card or use Show Me → Horizontal Bars.
+5. Drag Sales to Label.
+6. Sort the bars in descending order of sales. go to region drop down then sort by field -> descending
+7. Set the title to Sales Distribution by Region.
+
+#Two-dimensional data — Regional Sales Breakdown by Segment
+1. Open a new worksheet named Regional Sales by Segment.
+2. Drag Region to Rows.
+3. Drag Sales to Columns.
+4. Select Bar as the mark type.
+5. Drag Segment to Color.
+6. Ensure Analysis → Stack Marks → On is enabled.
+7. Drag Sales to Label if needed.
+8. Set the title to Regional Sales Breakdown by Segment.
+
+#Multidimensional data — Sales by Region, Segment and Category
+1. Open a new worksheet named Multidimensional Sales Analysis.
+2. Drag Region to Columns.
+3. Drag Sales to Rows.
+4. Select Bar as the mark type.
+5. Drag Segment to Columns, next to Region, if you want separate bars for each segment within each region.
+6. Drag Category to Color.
+7. Ensure stacked marks are enabled if you want the category breakdown represented by colored sections.
+8. Optionally drag Sales to Label.
+9. Set the title to Sales Analysis by Region and Category with Segment Breakdown.

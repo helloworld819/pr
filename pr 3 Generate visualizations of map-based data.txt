@@ -1,0 +1,11 @@
+1. Connect to the Superstore dataset.
+2. Open a new worksheet named Profit by State.
+3. Find State in the Data pane.
+4. Right-click State and select Geographic Role → State/Province, if it is not already assigned.
+5. Double-click State. Tableau should automatically generate a map.
+6. In the Marks card, change the mark type to Map or Filled Map.
+7. Drag Profit to Color.
+8. Drag Profit to Label if you want the profit values displayed on the map.
+9. Click Color → Edit Colors and choose a green color palette.
+10. Adjust the color range so lower profit appears lighter and higher profit appears darker.
+11. Set the title to Profit by State.

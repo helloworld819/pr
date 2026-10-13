@@ -1,0 +1,12 @@
+1. Connect to weatherhistory.csv.
+2. Open a new worksheet named Monthly Temperature Trends.
+3. Check the field names in the Data pane. The PDF describes a date field and a temperature field; the example dataset commonly uses Formatted Date and Temperature (C).
+4. If Formatted Date is not recognized as a date, change its data type to Date & Time.
+5. Drag Formatted Date to Columns.
+6. Click its drop-down arrow and select Month. To show the seasonal pattern across the entire date range, use the continuous month/date timeline rather than grouping all Januaries together.
+7. Drag Temperature (C) to Rows.
+8. Change the aggregation to Average if it is not already AVG(Temperature (C)).
+9. Select Line from the Marks card.
+10. Open the Analytics pane.
+11. Drag Trend Line onto the view and select a linear trendline.
+12. Set the title to Monthly Temperature Trends.

@@ -1,0 +1,21 @@
+dataset - superstore.csv
+#Sales vs. Sales Forecast by State
+1. Connect to Superstore and create a worksheet named Sales vs Sales Forecast.
+2. Drag Sales to Columns.
+3. Drag Sales Forecast to Rows, if that field exists in your dataset.
+4. Change the Marks type to Circle.
+5. Drag State to Detail.
+6. Drag State to Color to distinguish the states.
+7. Drag State to Label only if you want state names displayed.
+8. Set the title to Sales vs. Sales Forecast by State.
+
+#Profit Analysis by Sub-Category Over Time
+1. Create another worksheet named Profit by Sub-Category Over Time.
+2. Drag Order Date to Columns.
+3. Choose Year or the date level matching your reference chart.
+4. Drag Profit to Rows.
+5. Change the Marks type to Circle.
+6. Drag Sub-Category to Color.
+7. Drag Sub-Category to Columns, next to the date field, if you want the separate sub-category panels shown in the reference.
+8. If necessary, drag Order Date to Detail to show more granular time points.
+9. Set the title to Profit Analysis by Sub-Category Over Time.

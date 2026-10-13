@@ -1,0 +1,12 @@
+1. Open Tableau Desktop or Tableau Public.
+2. Under Connect, select Text File if you downloaded Superstore.csv, or Microsoft Excel if you downloaded an Excel version.
+3. Select the dataset and open a new worksheet.
+4. Rename the sheet Regional Profit Breakdown.
+5. Drag Region to Columns.
+6. Drag Category to Columns, beside Region.
+7. Drag Profit to Rows. Confirm that it shows SUM(Profit).
+8. Select Show Me → Side-by-side bars.
+9. Drag Category to Color on the Marks card.
+10. Drag Profit to Label to display profit values.
+11. Set the title to Regional Profit Breakdown by Product Category.
+12. If the bars are not grouped by category within each region, check that both Region and Category are on Columns, with Region first.

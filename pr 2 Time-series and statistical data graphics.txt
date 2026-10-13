@@ -1,0 +1,11 @@
+
+1. Connect to the same Superstore dataset.
+2. Open a new worksheet and rename it Quarterly Sales Performance.
+3. Drag Order Date to Columns.
+4. Click the drop-down arrow on the Order Date pill.
+5. Select Quarter under the date options. Use the discrete quarter level if you want separate quarterly marks. and go to quarter then custom then select date value.
+6. Drag Sales to Rows. It should display SUM(Sales).
+7. On the Marks card, select Line.
+8. Drag Sales to Label if you want values displayed at each point.
+9. Ensure the quarters are arranged chronologically from 2011 to 2014.
+10. Set the title to Quarterly Sales Performance
